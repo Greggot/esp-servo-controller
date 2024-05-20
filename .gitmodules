@@ -1,3 +1,6 @@
 [submodule "ESP-BLE-PlusPlus"]
 	path = ble_plus_plus
 	url = git@github.com:Greggot/ESP-BLE-PlusPlus.git
+[submodule "ESP-Networkxx"]
+	path = network
+	url = git@github.com:Greggot/ESP-Networkxx.git
