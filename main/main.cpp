@@ -30,7 +30,7 @@ void app_main(void)
     static WiFi::STA sta;
     static TCP::Address tcp_host_address;
     static BLE::Characteristic wifi_characteristic(0x4ED, BLE::permition::Write, BLE::property::Write | BLE::property::Notify);
-    auto* connectivity_service = new BLE::Service(0xC111E1A, {&wifi_characteristic});
+    static BLE::Service connectivity_service(0xC111E1A, {&wifi_characteristic});
     wifi_characteristic.setWriteCallback([](BLE::Characteristic*, const uint16_t length, const void* value)
     {
         auto* ssid = (char*)value;
@@ -77,9 +77,9 @@ void app_main(void)
 
     static BLE::Characteristic omega_rotor_characteristic(0xA0111, BLE::permition::Write, BLE::property::Write);
     static BLE::Characteristic theta_rotor_characteristic(0xA111E, BLE::permition::Write, BLE::property::Write);
-    auto* rotor_service = new BLE::Service(0xCFFFAE, {&omega_rotor_characteristic, &theta_rotor_characteristic});
+    static BLE::Service rotor_service (0xCFFFAE, {&omega_rotor_characteristic, &theta_rotor_characteristic});
 
-    static BLE::Server BLE_Device("BTservoController", {rotor_service, connectivity_service});
+    static BLE::Server BLE_Device("BTservoController", {&rotor_service, &connectivity_service});
     BLE::Server::Enable();
     ESP_LOGI(TAG, "BLE initialized");
 }
