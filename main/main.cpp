@@ -11,17 +11,23 @@
 #include <WiFi/STA.hpp>
 #include <TCP/server.hpp>
 
+#include <SkyBlue/Device.hpp>
+#include <SkyBlue/Collector.hpp>
+#include <SkyBlue/InterfaceTraits.hpp>
+
 #include "nvs_flash.h"
 #include "esp_log.h"
 
 static const char* TAG = "app";
 extern "C" { void app_main(void); }
 
-
 template<class Address_t>
 void output_address(const char* prefix, const Address_t& address) {
     ESP_LOGI(TAG, "%s: %u.%u.%u.%u\n", prefix, address.IP[0], address.IP[1], address.IP[2], address.IP[3]);
 }
+
+static SkyBlue::TCPserverDevice device;
+void skyblue_init(WiFi::STA&);
 
 void app_main(void)
 {
@@ -68,10 +74,10 @@ void app_main(void)
         WiFi::STA::TurnOnFullPower();
 
         // Start server, begin work after first connection
-        // device.connect(tcp_host_address);
-        // device.listen();
-        // auto client = device.otherside();
-        // output_address("Client connected: ", client);
+        device.connect(tcp_host_address);
+        device.listen();
+        auto client = device.otherside();
+        output_address("Client connected: ", client);
     });
     ESP_LOGI(TAG, "WiFi initialized");
 
@@ -82,4 +88,37 @@ void app_main(void)
     static BLE::Server BLE_Device("BTservoController", {&rotor_service, &connectivity_service});
     BLE::Server::Enable();
     ESP_LOGI(TAG, "BLE initialized");
+
+    skyblue_init(sta);
+    ESP_LOGI(TAG, "Application layer TCP protocol initialized");
+}
+
+void skyblue_init(WiFi::STA& sta)
+{
+    static SkyBlue::Module rotormodule;
+    rotormodule.setWrite([](const SkyBlue::ID& id, const void* data, size_t){
+        struct vertex{
+            float x; float y; float z;
+        };
+        vertex input;
+        memcpy(&input, data, sizeof(vertex));
+        ESP_LOGI(TAG, "Rotor %u received vertex x:%.2f, y:%.2f, z:%.2f", id.number, 
+            input.x, input.y, input.z);
+    });
+
+
+    static SkyBlue::Module wifi_module;
+    wifi_module.setWrite([&sta](const SkyBlue::ID&, const void*, size_t){
+        ESP_LOGI(TAG, "WiFi disconnection triggered");
+        // device.disconnect();
+        // sta.disconnect();
+        // sta.TurnOffFullPower();
+        // BLE::Server::Enable();
+        // device.deaf();
+        esp_restart();
+    });
+
+    device.add({0, SkyBlue::type_t::steady}, &wifi_module);
+    device.add({0, SkyBlue::type_t::rotorservo}, &rotormodule);
+    device.add({1, SkyBlue::type_t::rotorservo},& rotormodule);
 }
