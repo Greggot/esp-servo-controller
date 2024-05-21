@@ -1,0 +1,51 @@
+<diagram program="umletino" version="15.1"><zoom_level>9</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>171</x><y>252</y><w>153</w><h>63</h></coordinates><panel_attributes>wifi_characteristic
+--
+Считывает данные для 
+подключения к WiFi-сети</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>414</x><y>252</y><w>153</w><h>99</h></coordinates><panel_attributes>STA
+--
++ connect(...)
++ disconnect()
+--
+*Роль*
+WiFi-клиент, которому 
+выдается IP-адрес</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>315</x><y>252</y><w>117</w><h>27</h></coordinates><panel_attributes>lt=-&gt;</panel_attributes><additional_attributes>10;10;110;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>369</x><y>405</y><w>153</w><h>108</h></coordinates><panel_attributes>TCPserverDevice
+--
++ connect()
++ listen()
+--
+Конкретная реализация
+устройства, выполненная
+на TCP-сервере</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>486</x><y>342</y><w>27</w><h>81</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;70;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>378</x><y>567</y><w>126</w><h>126</h></coordinates><panel_attributes>Module
+--
++ setWrite()
++ setRead()
++ Write()
++ Read()
+--
+*Роль*
+Коммуникационный
+модуль</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>513</x><y>405</y><w>99</w><h>27</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>90;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>594</x><y>396</y><w>180</w><h>162</h></coordinates><panel_attributes>template=Connector
+Device
+--
+# connect()
+# listen()
+# write()
+# read()
++ modules
+--
+*Роль*
+Устройство протокола, 
+содержащее модули</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>432</x><y>486</y><w>180</w><h>99</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>180;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>603</x><y>585</y><w>144</w><h>45</h></coordinates><panel_attributes>wifi_module
+--
+отключает от WiFi</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>603</x><y>639</y><w>144</w><h>45</h></coordinates><panel_attributes>rotor_module
+--
+поворачивает приводы</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>495</x><y>576</y><w>126</w><h>36</h></coordinates><panel_attributes>lt=-&gt;
+instance</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>Relation</id><coordinates><x>495</x><y>630</y><w>126</w><h>36</h></coordinates><panel_attributes>lt=-&gt;
+instance</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLNote</id><coordinates><x>315</x><y>369</y><w>504</w><h>333</h></coordinates><panel_attributes>SkyBlue - прикладной протокол
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>216</y><w>90</w><h>27</h></coordinates><panel_attributes>Characteristic</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>81</x><y>180</y><w>180</w><h>90</h></coordinates><panel_attributes>lt=-
+instance</panel_attributes><additional_attributes>180;80;180;20;10;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>666</x><y>207</y><w>90</w><h>27</h></coordinates><panel_attributes>omega</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>774</x><y>207</y><w>90</w><h>27</h></coordinates><panel_attributes>theta</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLNote</id><coordinates><x>612</x><y>171</y><w>297</w><h>81</h></coordinates><panel_attributes>servo - методы для управления серво-приводами
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>189</x><y>108</y><w>162</w><h>27</h></coordinates><panel_attributes>omega_rotor_characteristic</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>189</x><y>144</y><w>162</w><h>27</h></coordinates><panel_attributes>theta_rotor_characteristic</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>63</x><y>99</y><w>144</w><h>135</h></coordinates><panel_attributes>lt=-&gt;
+instance</panel_attributes><additional_attributes>140;20;30;20;30;130</additional_attributes></element><element><id>Relation</id><coordinates><x>81</x><y>135</y><w>126</w><h>36</h></coordinates><panel_attributes>lt=-
+instance</panel_attributes><additional_attributes>120;20;10;20</additional_attributes></element><element><id>UMLNote</id><coordinates><x>18</x><y>72</y><w>342</w><h>288</h></coordinates><panel_attributes>BLE - Bluetooth Low Energy
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>558</x><y>288</y><w>297</w><h>333</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;310;10;310;350;210;350</additional_attributes></element><element><id>Relation</id><coordinates><x>738</x><y>243</y><w>135</w><h>423</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>130;10;130;450;10;450</additional_attributes></element><element><id>Relation</id><coordinates><x>342</x><y>108</y><w>333</w><h>81</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>350;70;350;10;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>342</x><y>144</y><w>333</w><h>27</h></coordinates><panel_attributes>lt=-</panel_attributes><additional_attributes>350;10;10;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>396</x><y>216</y><w>189</w><h>144</h></coordinates><panel_attributes>WiFi
+--</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>270</y><w>90</w><h>27</h></coordinates><panel_attributes>Service</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>45</x><y>324</y><w>90</w><h>27</h></coordinates><panel_attributes>Server</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>81</x><y>234</y><w>27</w><h>54</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>81</x><y>288</y><w>27</w><h>54</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element></diagram>

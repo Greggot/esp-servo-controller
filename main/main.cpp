@@ -128,8 +128,8 @@ BLE::Service* servo_service()
 
 void skyblue_init(WiFi::STA& sta)
 {
-    static SkyBlue::Module rotormodule;
-    rotormodule.setWrite([](const SkyBlue::ID& id, const void* data, size_t){
+    static SkyBlue::Module rotor_module;
+    rotor_module.setWrite([](const SkyBlue::ID& id, const void* data, size_t){
         struct vertex{
             float x; float y; float z;
         };
@@ -158,6 +158,6 @@ void skyblue_init(WiFi::STA& sta)
     });
 
     device.add({0, SkyBlue::type_t::steady}, &wifi_module);
-    device.add({0, SkyBlue::type_t::rotorservo}, &rotormodule);
-    device.add({1, SkyBlue::type_t::rotorservo},& rotormodule);
+    device.add({0, SkyBlue::type_t::rotorservo}, &rotor_module);
+    device.add({1, SkyBlue::type_t::rotorservo},& rotor_module);
 }
