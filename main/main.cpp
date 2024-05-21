@@ -1,6 +1,6 @@
 /**
  * @file
- * @brief  Входная точка приложения
+ * @brief   Application entry point
  * @author https://github.com/Greggot/
  */
 
@@ -14,6 +14,8 @@
 #include <SkyBlue/Device.hpp>
 #include <SkyBlue/Collector.hpp>
 #include <SkyBlue/InterfaceTraits.hpp>
+
+#include <servo/servo_ortho.h>
 
 #include "nvs_flash.h"
 #include "esp_log.h"
@@ -32,6 +34,10 @@ void skyblue_init(WiFi::STA&);
 void app_main(void)
 {
     nvs_flash_init();
+ 
+    servo::omega_init();
+    servo::theta_init();
+    ESP_LOGI(TAG, "Servos initialized");
 
     static WiFi::STA sta;
     static TCP::Address tcp_host_address;
@@ -104,6 +110,12 @@ void skyblue_init(WiFi::STA& sta)
         memcpy(&input, data, sizeof(vertex));
         ESP_LOGI(TAG, "Rotor %u received vertex x:%.2f, y:%.2f, z:%.2f", id.number, 
             input.x, input.y, input.z);
+        
+        if(id.number == 0) {
+            servo::set_omega_angle(input.z);
+        } else {
+            servo::set_theta_angle(input.z);
+        }
     });
 
 
