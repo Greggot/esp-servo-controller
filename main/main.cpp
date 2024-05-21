@@ -31,6 +31,8 @@ void output_address(const char* prefix, const Address_t& address) {
 static SkyBlue::TCPserverDevice device;
 void skyblue_init(WiFi::STA&);
 
+BLE::Service* servo_service();
+
 void app_main(void)
 {
     nvs_flash_init();
@@ -87,16 +89,41 @@ void app_main(void)
     });
     ESP_LOGI(TAG, "WiFi initialized");
 
-    static BLE::Characteristic omega_rotor_characteristic(0xA0111, BLE::permition::Write, BLE::property::Write);
-    static BLE::Characteristic theta_rotor_characteristic(0xA111E, BLE::permition::Write, BLE::property::Write);
-    static BLE::Service rotor_service (0xCFFFAE, {&omega_rotor_characteristic, &theta_rotor_characteristic});
-
-    static BLE::Server BLE_Device("BTservoController", {&rotor_service, &connectivity_service});
+    static BLE::Server BLE_Device("BTservoController", {servo_service(), &connectivity_service});
     BLE::Server::Enable();
     ESP_LOGI(TAG, "BLE initialized");
 
     skyblue_init(sta);
     ESP_LOGI(TAG, "Application layer TCP protocol initialized");
+}
+
+/// @return Bluetooth service with two characteristics, 
+/// changing servos' orientations on write
+BLE::Service* servo_service()
+{
+    static BLE::Characteristic omega_rotor_characteristic(0xA0111, BLE::permition::Write, BLE::property::Write);
+    static BLE::Characteristic theta_rotor_characteristic(0xA111E, BLE::permition::Write, BLE::property::Write);
+    static BLE::Service rotor_service (0xCFFFAE, {&omega_rotor_characteristic, &theta_rotor_characteristic});
+
+    omega_rotor_characteristic.setWriteCallback([](BLE::Characteristic*, const uint16_t length, const void* value)
+    {
+        if(length != sizeof(uint8_t)) {
+            ESP_LOGW(TAG, "Incorrect angle parameter, send a single byte");
+        }
+        const uint8_t angle = *((uint8_t*)value);
+        servo::set_omega_angle(static_cast<unsigned int>(angle));
+    });
+
+    theta_rotor_characteristic.setWriteCallback([](BLE::Characteristic*, const uint16_t length, const void* value)
+    {
+        if(length != sizeof(uint8_t)) {
+            ESP_LOGW(TAG, "Incorrect angle parameter, send a single byte");
+        }
+        const uint8_t angle = *((uint8_t*)value);
+        servo::set_theta_angle(static_cast<unsigned int>(angle));
+    });
+
+    return &rotor_service;
 }
 
 void skyblue_init(WiFi::STA& sta)
